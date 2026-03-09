@@ -13,10 +13,10 @@ The three dots ... are used to copy,  or open arrays/objects easily.
 
 3️⃣ What is the difference between map(), filter(), and forEach()?
 
-Answer : Difference between map(), filter(), and forEach()
-map() makes a new array by changing each item.
-filter() makes a new array only with items that pass some check.
-forEach() just goes through items, doesn’t return anything.
+Answer : ​These are all about looping through arrays, but they have different goals:
+​forEach(): Just a simple loop. It does something for every item but returns nothing.
+​map(): It transforms the array. It goes through every item, changes it based on your logic, and returns a brand new array.
+​filter(): It’s a gatekeeper. It checks every item against a condition and only returns the ones that pass the test into a new array.
 
 
 4️⃣ What is an arrow function?

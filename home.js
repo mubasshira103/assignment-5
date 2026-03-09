@@ -1,11 +1,18 @@
-
-
 let allIssue=[];
 
-
+const manageSpinner = (status) => {
+  if (status == true) {
+    document.getElementById("spinner").classList.remove("hidden");
+    document.getElementById("issue-container").classList.add("hidden");
+  } else {
+    document.getElementById("issue-container").classList.remove("hidden");
+    document.getElementById("spinner").classList.add("hidden");
+  }
+};
 
 
 const loadIssues = () =>{
+  manageSpinner(true);
   fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
   .then((res)=>res.json())
   .then((data)=>{
@@ -127,7 +134,8 @@ const displayIssues = (issues) => {
 
   count.innerText = issues.length + " Issues";
   if (issues.length == 0) {
-    container.innerHTML = `<p class="col-span-full text-center">No Issues Found</p>`;
+    container.innerHTML = `<p class="col-span-full text-5xl font-bold p-10 text-center">No Issues Found</p>`;
+    manageSpinner(false);
     return;
   }
   issues.forEach(issue => {
@@ -175,6 +183,8 @@ const displayIssues = (issues) => {
     container.appendChild(card);
 
   });
+  manageSpinner(false);
+  return;
 
 };
 
@@ -188,7 +198,6 @@ function getPriorityClass(p) {
 loadIssues();
 
 document.getElementById('search-btn').addEventListener("click", () => {
-  setActive ('search-btn')
   const input = document.getElementById("search-input");
   const searchValue = input.value.trim().toLowerCase();
   if (searchValue === "") {
@@ -201,4 +210,3 @@ const filterIssue = allIssue.filter((i) => {
 
   displayIssues(filterIssue);
 });
-

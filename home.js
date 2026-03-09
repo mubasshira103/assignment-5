@@ -114,16 +114,32 @@ const displayIssueDetails = (data) => {
 
 
 // active button
+// const setActive = (id) => {
+
+//   document.getElementById("btn-all").classList.remove("active-tab");
+//   document.getElementById("btn-open").classList.remove("active-tab");
+//   document.getElementById("btn-closed").classList.remove("active-tab");
+
+//   document.getElementById(id).classList.add("active-tab");
+
+// };
 const setActive = (id) => {
+  const tabs = ["btn-all", "btn-open", "btn-closed"];
 
-  document.getElementById("btn-all").classList.remove("active-tab");
-  document.getElementById("btn-open").classList.remove("active-tab");
-  document.getElementById("btn-closed").classList.remove("active-tab");
+  tabs.forEach(tabId => {
+    const element = document.getElementById(tabId);
+    if (element) {
+      element.classList.remove("active-tab");
+    }
+  });
 
-  document.getElementById(id).classList.add("active-tab");
-
+  if (id && tabs.includes(id)) {
+    const activeElement = document.getElementById(id);
+    if (activeElement) {
+      activeElement.classList.add("active-tab");
+    }
+  }
 };
-
 
 const displayIssues = (issues) => {
 
@@ -198,7 +214,8 @@ function getPriorityClass(p) {
 loadIssues();
 
 document.getElementById('search-btn').addEventListener("click", () => {
-  
+  setActive("")
+
   const input = document.getElementById("search-input");
   const searchValue = input.value.trim().toLowerCase();
   if (searchValue === "") {

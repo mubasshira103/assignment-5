@@ -198,6 +198,7 @@ function getPriorityClass(p) {
 loadIssues();
 
 document.getElementById('search-btn').addEventListener("click", () => {
+  
   const input = document.getElementById("search-input");
   const searchValue = input.value.trim().toLowerCase();
   if (searchValue === "") {

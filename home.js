@@ -42,7 +42,68 @@ const showCard = (id) => {
 
 
 }
+const loadIssueDetails = (id) =>{
+  const url = `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`;
+  fetch(url)
+  .then((res)=>res.json())
+  .then((data)=>displayIssueDetails(data.data))
+}
 
+const displayIssueDetails = (data) => {
+  const modalBox = document.getElementById('details-container');
+
+  // Destructure for cleaner code
+  const { title, status, author, createdAt, labels, description, assignee, priority } = data;
+
+  modalBox.innerHTML = `
+    <div class="space-y-4">
+      <h3 class="text-3xl font-bold text-slate-800">${title}</h3>
+
+      <div class="flex items-center gap-2 text-slate-500 text-sm">
+        <span class="badge ${status === 'open' ? 'badge-success' : 'badge-secondary'} text-white px-3 py-3 font-medium capitalize">
+          ${status === 'open' ? 'Opened' : 'Closed'}
+        </span>
+        <span>•</span>
+        <span>Opened by ${author}</span>
+        <span>•</span>
+        <span>${new Date(createdAt).toLocaleDateString()}</span>
+      </div>
+
+      <div class="flex gap-2 flex-wrap">
+        ${labels?.map(l => `
+          <div class="badge badge-outline border-indigo-200 text-indigo-500 bg-indigo-50 font-semibold px-3 py-3 uppercase text-xs">
+            ${l}
+          </div>
+        `).join('') || '<span class="text-xs text-gray-400">No Labels</span>'}
+      </div>
+
+      <p class="py-4 text-slate-600 leading-relaxed text-lg">
+        ${description}
+      </p>
+
+      <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+        <div>
+          <p class="text-slate-400 text-sm">Assignee:</p>
+          <p class="font-bold text-slate-700 text-lg">${assignee || 'Unassigned'}</p>
+        </div>
+
+        <div class="text-right">
+          <p class="text-slate-400 text-sm">Priority:</p>
+          <span class="badge ${getPriorityClass(priority)} border-none font-bold px-4 py-3 uppercase text-xs">
+            ${priority}
+          </span>
+        </div>
+      </div>
+
+      <div class="modal-action">
+        <form method="dialog">
+          <button class="btn btn-primary bg-indigo-600 border-none px-8">Close</button>
+        </form>
+      </div>
+    </div>
+  `;
+  document.getElementById("issue_modal").showModal();
+}
 
 
 // active button
@@ -87,7 +148,7 @@ const displayIssues = (issues) => {
 
     card.innerHTML = `
 
-        <div onclick="my_modal_3.showModal()" class="p-1" )
+        <div onclick="loadIssueDetails('${issue.id}')" class="p-1">
                 <div class="flex justify-between items-start mb-4">
                     <div class="${iconsColor}">
                         <i class="fa-solid fa-circle-notch text-lg"></i>
@@ -127,6 +188,7 @@ function getPriorityClass(p) {
 loadIssues();
 
 document.getElementById('search-btn').addEventListener("click", () => {
+  setActive ('search-btn')
   const input = document.getElementById("search-input");
   const searchValue = input.value.trim().toLowerCase();
   if (searchValue === "") {
